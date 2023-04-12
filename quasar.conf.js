@@ -9,6 +9,7 @@
 // https://v1.quasar.dev/quasar-cli/quasar-conf-js
 
 const ESLintPlugin = require('eslint-webpack-plugin')
+const path = require("path");
 
 module.exports = function (/* ctx */) {
   return {
@@ -69,7 +70,10 @@ module.exports = function (/* ctx */) {
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpack (chain) {
         chain.plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }])
+          .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }]);
+
+        // Add this workaround to solve issues with vue-echarts
+        chain.resolve.alias.set("vue", path.resolve('./node_modules/vue/dist/vue.runtime.esm.js'));
       }
     },
 
